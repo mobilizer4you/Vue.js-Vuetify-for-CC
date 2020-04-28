@@ -1,0 +1,169 @@
+<html>
+    <head>
+        <title>VueJS-Currency-Converter</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    </head>
+    <body>
+        <style>
+            #app{
+               padding: 20px 15px 15px 15px;
+               margin: 0 0 25px 0;
+               width: auto;
+               background-color: #e7e7e7;
+            }
+            span {
+               font-size:15px;
+               color: #304FFE;
+            }
+        </style>
+        <div id="app">
+            <v-app id="inspire">
+                <v-form>
+                    <v-container>
+                        <v-layout column>
+                            <v-layout align-center column justify-center>
+                                <h1 class="display-1 font-weight-bold mb-3 mt-5 red--text">Currency Converter</h1>
+                            </v-layout>
+                            
+                            <v-layout d-flex align-center justify-center>
+                                <span>Enter Amount:</span>
+                                <v-col class="d-flex" cols="12" sm="4">
+                                    <v-text-field type = "number" v-model.number = "amount" placeholder = "Enter Amount"></v-text-field>
+                                </v-col>                                
+                            </v-layout>
+                            
+                            <v-layout d-flex align-center justify-center>
+                                <v-chip draggable outlined>Convert From:</v-chip>
+                                <v-col class="d-flex" cols="12" sm="4">
+                                    <v-select
+                                        v-model="currencyfrom1"
+                                        :hint="`${currencyfrom1.name}, ${currencyfrom1.desc}`"
+                                        :items="currencyfroms"
+                                        item-text="desc"
+                                        item-value="name"
+                                        persistent-hint
+                                        return-object
+                                        single-line
+                                    ></v-select>
+                                    <v-icon color="blue accent-4">{{currencyfrom1.icon}}</v-icon>
+                                </v-col>
+                                <v-chip draggable outlined>Convert To:</v-chip>
+                                <v-col class="d-flex" cols="12" sm="4">
+                                    <v-select
+                                        v-model="currencyfrom2"
+                                        :hint="`${currencyfrom2.name}, ${currencyfrom2.desc}`"
+                                        :items="currencyfroms"
+                                        item-text="desc"
+                                        item-value="name"
+                                        persistent-hint
+                                        return-object
+                                        single-line
+                                    ></v-select>
+                                    <v-icon color="blue accent-4">{{currencyfrom2.icon}}</v-icon>
+                                </v-col>
+                            </v-layout>
+                
+                            <v-layout align-center column justify-center>
+                                <label> {{amount}} <span> {{currencyfrom1.name}} </span>equals {{finalamount}} <span> {{currencyfrom2.name}} </span></label>
+                            </v-layout>
+                           
+                        </v-layout>
+                    </v-container>
+                </v-form>
+            </v-app>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                vuetify: new Vuetify(),
+                data: {
+                    name:'',
+                    currencyfroms : [
+                        {name : "USD", desc:"US Dollar", icon:"mdi-currency-usd"},
+                        {name : "EUR", desc:"Euro", icon:"mdi-currency-eur"},
+                        {name : "INR", desc:"Indian Rupee", icon:"mdi-currency-inr"},
+                        {name : "BHD", desc:"Bahraini Dinar", icon:"mdi-currency-gbp"}
+                    ],
+                    currencyfrom1 : {name : "USD", desc:"US Dollar", icon:"mdi-currency-usd"},
+                    currencyfrom2 : {name : "EUR", desc:"Euro", icon:"mdi-currency-eur"},
+                    convertfrom: "INR",
+                    convertto:"USD",
+                    amount :"0",
+                    currency:'usd'
+                },
+                computed: {
+                    finalamount:function() {
+                        var to = this.currencyfrom2.name;
+                        var from = this.currencyfrom1.name;
+                        var final;
+                        switch(from) {
+                            case "INR":
+                            if (to == "USD") {
+                                final = this.amount * 0.016;
+                            }
+                            if (to == "EUR") {
+                                final = this.amount * 0.013;
+                            }
+                            if (to == "INR") {
+                                final = this.amount;
+                            }
+                            if (to == "BHD") {
+                                final = this.amount * 0.0059;
+                            }
+                            break;
+                            case "USD":
+                            if (to == "INR") {
+                                final = this.amount * 63.88;
+                            }
+                            if (to == "EUR") {
+                                final = this.amount * 0.84;
+                            }
+                            if (to == "USD") {
+                                final = this.amount;
+                            }
+                            if (to == "BHD") {
+                                final = this.amount * 0.38;
+                            }
+                            break;
+                            case "EUR":
+                            if (to == "INR") {
+                                final = this.amount * 76.22;
+                            }
+                            if (to == "USD") {
+                                final = this.amount * 1.19;
+                            }
+                            if (to == "EUR") {
+                                final = this.amount;
+                            }
+                            if (to == "BHD") {
+                                final = this.amount * 0.45;
+                            }
+                            break;
+                            case "BHD":
+                            if (to == "INR") {
+                                final = this.amount *169.44;
+                            }
+                            if (to == "USD") {
+                                final = this.amount * 2.65;
+                            }
+                            if (to == "EUR") {
+                                final = this.amount * 2.22;
+                            }
+                            if (to == "BHD") {
+                                final = this.amount;
+                            }
+                            break
+                        }
+                        return final;
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>
